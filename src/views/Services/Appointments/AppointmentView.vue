@@ -9,19 +9,16 @@ import { RouterLink, useRoute } from "vue-router";
 const route = useRoute();
 const appointmentStore = useAppointmentStore();
 const authStore = useAuthStore();
-const appointments = ref([]);
 const courseStore = useCourseStore();
 const { courses, errors } = storeToRefs(courseStore);
+const { appointments } = storeToRefs(appointmentStore);
 
 const selectedCourse = ref(null);
 
 onMounted(async () => {
   await appointmentStore.getAppointments(route.params.id);
   appointments.value = appointmentStore.appointments;
-
   await courseStore.getCourses();
-
-  // Megkeressük a megfelelő kurzust az ID alapján
   selectedCourse.value = courses.value.find(course => course.id == route.params.id);
 });
 

@@ -18,16 +18,16 @@ onMounted(() => {
     <div class="container mx-auto py-10">
       <h1 class="text-4xl mt-10 font-bold text-center text-gray-800 mb-8">
         Available Courses
-        <RouterLink v-if="authStore.user && authStore.user.role === 'expert'"  :to="{ name: 'createCourse' }" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
-              Add new course
-            </RouterLink>
+        <RouterLink v-if="authStore.user && authStore.user.role === 'expert'" :to="{ name: 'createCourse' }" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
+          Add new course
+        </RouterLink>
       </h1>
 
       <div v-if="courses.length === 0" class="text-center text-xl text-gray-600">
         No courses available.
-        <RouterLink v-if="authStore.user && authStore.user.role === 'expert'"  :to="{ name: 'createCourse' }" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
-              Add new course
-            </RouterLink>
+        <RouterLink v-if="authStore.user && authStore.user.role === 'expert'" :to="{ name: 'createCourse' }" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
+          Add new course
+        </RouterLink>
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -54,12 +54,22 @@ onMounted(() => {
           >
             Read more...
           </RouterLink>
+
+          <!-- Plusz jel csak akkor, ha a kurzus a felhasználóhoz tartozik -->
+          <!-- <div v-if="course.user_id === authStore.user.id" class="mt-4 text-right">
+            <RouterLink
+              :to="{ name: 'addAppointment', params: { courseId: course.id } }"
+              class="text-xl text-green-600"
+            >
+              +
+            </RouterLink>
+          </div> -->
         </div>
       </div>
-      
     </div>
   </main>
 </template>
+
 
 <style scoped>
 .line-clamp-3 {
