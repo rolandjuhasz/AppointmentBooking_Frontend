@@ -12,6 +12,7 @@ const authStore = useAuthStore();
 const courseStore = useCourseStore();
 const { courses, errors } = storeToRefs(courseStore);
 const { appointments } = storeToRefs(appointmentStore);
+const { bookAppointment } = useAppointmentStore();
 
 const selectedCourse = ref(null);
 
@@ -21,6 +22,21 @@ onMounted(async () => {
   await courseStore.getCourses();
   selectedCourse.value = courses.value.find(course => course.id == route.params.id);
 });
+
+const handleBooking = async (appointmentId) => {
+  if (!authStore.user) {
+    alert("Jelentkezz be az időpont foglalásához!");
+    return;
+  }
+
+  const result = await appointmentStore.bookAppointment(appointmentId);
+  if (result.success) {
+    alert(result.message);
+    
+  } else {
+    alert("Hiba történt: " + result.message);
+  }
+};
 
 </script>
 
@@ -36,7 +52,12 @@ onMounted(async () => {
       <div
         v-for="appointment in appointments"
         :key="appointment.id"
-        class="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl hover:shadow-3xl p-6 border border-gray-100 relative"
+        :class="[
+      'p-6 border border-gray-100 relative',
+      appointment.user_id != null
+        ? 'bg-gray-300' 
+        : 'bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl hover:shadow-3xl'
+    ]"
       >
         <div class="flex items-center justify-center mb-4">
           <span class="text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
@@ -49,9 +70,14 @@ onMounted(async () => {
         </h3>
 
         <div class="flex items-center justify-center text-sm text-gray-500">
-          <RouterLink :to="{ name: 'home' }" class="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
-              Book
-          </RouterLink>
+          <button 
+        @click="handleBooking(appointment.id)"
+        :class="[appointment.user_id == null ?
+        'cursor-pointer px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300':
+        'cursor-not-allowed px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300']"
+      >
+        Book
+      </button>
         </div>
       </div>
     </div>

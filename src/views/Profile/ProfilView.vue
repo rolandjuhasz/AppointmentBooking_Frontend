@@ -1,17 +1,15 @@
 <script setup>
-import { ref } from 'vue';
-
 const user = {
   name: "John Doe",
   title: "Software Developer",
   bio: "Passionate developer with experience in Vue.js, Tailwind CSS, and modern web technologies.",
+  avatar: "https://via.placeholder.com/150", // Cseréld ki saját képre
+  socialLinks: [
+    { name: "GitHub", url: "https://github.com" },
+    { name: "Twitter", url: "https://twitter.com" },
+    { name: "LinkedIn", url: "https://linkedin.com" }
+  ]
 };
-
-const bookings = ref([
-  { course: "Vue.js Basics", date: "2024-03-10", time: "10:00 AM" },
-  { course: "Advanced Tailwind CSS", date: "2024-03-15", time: "2:00 PM" },
-  { course: "Full-Stack Development", date: "2024-04-01", time: "5:00 PM" }
-]);
 </script>
 
 <template>
@@ -23,15 +21,13 @@ const bookings = ref([
       <h2 class="text-2xl font-semibold text-gray-800 mt-4">{{ user.name }}</h2>
       <p class="text-purple-600 font-medium">{{ user.title }}</p>
       <p class="text-gray-600 mt-4">{{ user.bio }}</p>
-      
-      <h3 class="text-xl font-semibold text-gray-800 mt-6">Foglalásaid</h3>
-      <ul class="mt-4 space-y-3">
-        <li v-for="booking in bookings" :key="booking.date + booking.time" class="bg-purple-100 p-3 rounded-lg shadow-sm">
-          <p class="text-gray-700"><strong>Kurzus:</strong> {{ booking.course }}</p>
-          <p class="text-gray-700"><strong>Dátum:</strong> {{ booking.date }}</p>
-          <p class="text-gray-700"><strong>Időpont:</strong> {{ booking.time }}</p>
-        </li>
-      </ul>
+
+      <div class="mt-6 flex justify-center space-x-4">
+        <a v-for="link in user.socialLinks" :key="link.name" :href="link.url" target="_blank"
+           class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full shadow-lg hover:from-purple-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+          {{ link.name }}
+        </a>
+      </div>
     </div>
   </div>
 </template>

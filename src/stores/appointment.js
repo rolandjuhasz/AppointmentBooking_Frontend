@@ -61,5 +61,27 @@ export const useAppointmentStore = defineStore("appointmentStore", {
         return { success: false, message: "Hiba történt az időpont törlésénél." };
       }
     },
+    /******************* Book an appointment *******************/
+    async bookAppointment(appointmentId) {
+      const res = await fetch(`/api/appointments/${appointmentId}/book`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    
+      const data = await res.json();
+      if (res.ok) {
+        // Frissítsük a lefoglalt időpontokat
+        this.appointments = this.appointments.map(app => 
+          app.id === appointmentId ? { ...app, user_id: data.appointment.user_id } : app
+        );
+        return { success: true, message: "Időpont sikeresen lefoglalva!" };
+      } else {
+        return { success: false, message: data.error || "Hiba történt az időpont foglalásánál." };
+      }
+    }
+    
   },
 });

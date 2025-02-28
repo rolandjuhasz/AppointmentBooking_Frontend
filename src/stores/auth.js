@@ -33,6 +33,8 @@ export const useAuthStore = defineStore("authStore", {
       const data = await res.json();
       if (data.errors) {
         this.errors = data.errors;
+      } else if (data.message && data.message.includes("verify your email")) {  
+        this.errors = { verification: "Kérlek, erősítsd meg az e-mail címed!" };
       } else {
         this.errors = {};
         localStorage.setItem("token", data.token);
