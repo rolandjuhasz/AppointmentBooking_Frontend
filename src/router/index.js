@@ -7,6 +7,7 @@ import ServiceView from '@/views/Services/Courses/CoursesView.vue'
 import AppointmentView from '@/views/Services/Appointments/AppointmentView.vue'
 import CreateCourseView from '@/views/Services/Courses/CreateCourseView.vue'
 import CreateAppointmentsView from '@/views/Services/Appointments/CreateAppointmentsView.vue'
+import ProfilView from '@/views/Profile/ProfilView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: "/services",
       name: "services",
       component: ServiceView,
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: ProfilView,
     },
     {
       path: "/courses/:id/appointments",

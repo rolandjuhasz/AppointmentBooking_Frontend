@@ -14,6 +14,7 @@ const formData = reactive({
   role: "user"
 });
 
+
 onMounted(() => (errors.value = {}));
 </script>
 
@@ -21,6 +22,10 @@ onMounted(() => (errors.value = {}));
   <main class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50">
     <div class="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100">
       <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Register a new account</h1>
+
+      <p v-if="errors.verification" class="text-orange-700 text-center mb-4 font-bold">
+  {{ errors.verification }}
+</p>
 
       <form @submit.prevent="authenticate('register', formData)" class="space-y-6">
         <div>
