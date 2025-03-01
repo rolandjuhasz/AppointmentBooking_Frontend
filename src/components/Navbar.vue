@@ -1,10 +1,17 @@
 <script setup>
-import { useAuthStore } from "@/stores/auth";
-import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { ref } from 'vue';
 
-const authStore = useAuthStore();
-const isOpen = ref(false);
+const user = {
+  name: "John Doe",
+  title: "Software Developer",
+  bio: "Passionate developer with experience in Vue.js, Tailwind CSS, and modern web technologies.",
+};
+
+const bookings = ref([
+  { course: "Vue.js Basics", date: "2024-03-10", time: "10:00 AM" },
+  { course: "Advanced Tailwind CSS", date: "2024-03-15", time: "2:00 PM" },
+  { course: "Full-Stack Development", date: "2024-04-01", time: "5:00 PM" }
+]);
 </script>
 
 <template>
@@ -80,38 +87,16 @@ const isOpen = ref(false);
         </svg>
       </button>
     </div>
-
-    <div 
-      v-if="isOpen" 
-      class="md:hidden bg-[#1F2937] py-4 space-y-3 text-center border-t border-purple-500"
-    >
-      <RouterLink 
-        :to="{ name: 'home' }" 
-        class="block py-2 text-lg font-medium hover:text-purple-400 transition duration-300"
-      >
-        Home
-      </RouterLink>
-      <RouterLink 
-        :to="{ name: 'services' }" 
-        class="block py-2 text-lg font-medium hover:text-purple-400 transition duration-300"
-      >
-        Services
-      </RouterLink>
-      <RouterLink 
-        :to="{ name: 'home' }" 
-        class="block py-2 text-lg font-medium hover:text-purple-400 transition duration-300"
-      >
-        Contact
-      </RouterLink>
-      <button class="w-full px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full hover:from-purple-700 hover:to-blue-600 transition duration-300">
-        Get Started
-      </button>
-    </div>
-  </nav>
+  </div>
 </template>
 
 <style scoped>
-.relative:hover span {
-  width: 100%;
-}
+  .animate-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
 </style>
