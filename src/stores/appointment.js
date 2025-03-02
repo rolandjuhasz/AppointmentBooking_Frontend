@@ -19,6 +19,26 @@ export const useAppointmentStore = defineStore("appointmentStore", {
         this.errors = data.errors || { general: "Hiba történt az időpontok betöltésekor." };
       }
     },
+
+    /******************* Create an appointment by UserID *******************/
+    async getAppointmentForUser(userId) {
+      const token = localStorage.getItem("token");  // Lekérjük a token-t a localStorage-ból
+      
+      const res = await fetch(`/api/appointments/${userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        this.appointments = data;
+      } else {
+        this.errors = data.errors || { general: "Hiba történt az időpontok betöltésekor." };
+      }
+    },
     
 
     /******************* Create an appointment *******************/

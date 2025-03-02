@@ -1,44 +1,62 @@
 <script setup>
-const user = {
-  name: "John Doe",
-  title: "Software Developer",
-  bio: "Passionate developer with experience in Vue.js, Tailwind CSS, and modern web technologies.",
-  avatar: "https://via.placeholder.com/150", // Cseréld ki saját képre
-  socialLinks: [
-    { name: "GitHub", url: "https://github.com" },
-    { name: "Twitter", url: "https://twitter.com" },
-    { name: "LinkedIn", url: "https://linkedin.com" }
-  ]
-};
+import { useAppointmentStore } from "@/stores/appointment";
+import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
+
+const appointmentStore = useAppointmentStore();
+const { appointments } = storeToRefs(appointmentStore);
+const authStore = useAuthStore();
+
+onMounted(async () => {
+  await appointmentStore.getAppointmentForUser(authStore.user.id);
+});
 </script>
 
 <template>
-  <div class="relative min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800 flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.2),_transparent)]"></div>
+  <main class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 flex justify-center items-center">
+    <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8">
 
-    <div class="bg-white shadow-xl rounded-2xl p-8 text-center max-w-md w-full z-10">
-      <img :src="user.avatar" alt="Profile Picture" class="w-32 h-32 rounded-full mx-auto border-4 border-purple-500 shadow-lg">
-      <h2 class="text-2xl font-semibold text-gray-800 mt-4">{{ user.name }}</h2>
-      <p class="text-purple-600 font-medium">{{ user.title }}</p>
-      <p class="text-gray-600 mt-4">{{ user.bio }}</p>
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Profile Datas</h1>
+        <div class="mt-6 flex flex-col items-center">
+          <img :src="authStore.user.avatar" alt="Avatar" class="w-24 h-24 rounded-full shadow-lg">
+          <p class="font-bold">Username:</p><span class="text-gray-500 text-xl">{{ authStore.user.name }}</span>
+          <p class="font-bold">Email:</p><span class="text-gray-500 text-xl">{{ authStore.user.email }}</span>
+        </div>
+      </div>
 
-      <div class="mt-6 flex justify-center space-x-4">
-        <a v-for="link in user.socialLinks" :key="link.name" :href="link.url" target="_blank"
-           class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold rounded-full shadow-lg hover:from-purple-700 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
-          {{ link.name }}
-        </a>
+      <div class="mt-10 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Booked Appointments</h1>
+        <div class="mt-6 space-y-4">
+          <div 
+            v-for="appointment in appointments" 
+            :key="appointment.id" 
+            class="p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm hover:bg-gray-100 transition"
+          >
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-medium text-gray-700">{{appointment.course?.title}}</span>
+              <span class="text-sm text-gray-500">{{ appointment.appointment_time }}</span>
+            </div>
+            <div class="mt-2 text-left">
+              <p class="text-sm text-gray-600">Created by: {{ appointment.creator?.name }}</p>
+              <p class="text-sm text-gray-600">Booked by: {{ appointment.bookedBy?.name }}</p>
+            </div>
+          </div>
+          <div v-if="appointments.length === 0" class="text-gray-500">
+            Nincsenek lefoglalt időpontok.
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
-  .animate-fade-in {
-    animation: fadeIn 1.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 </style>
