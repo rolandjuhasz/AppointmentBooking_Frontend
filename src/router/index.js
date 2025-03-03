@@ -38,6 +38,7 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: ProfilView,
+      meta: {auth: true}
     },
     {
       path: "/courses/:id/appointments",

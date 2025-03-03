@@ -22,6 +22,24 @@ export const useCourseStore = defineStore("courseStore", {
         this.errors = data.errors || { general: "Hiba történt a kurzusok betöltésekor." };
       }
     },
+    /******************* Get course by id *******************/
+
+    async getCoursesForUser() {
+      const res = await fetch("/api/user/courses", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+    
+      const data = await res.json();
+      if (res.ok) {
+        return data; 
+      } else {
+        this.errors = data.errors || { general: "Hiba történt a kurzusok lekérdezésekor." };
+        return [];
+      }
+    },
+    
 
     /******************* Create a new course *******************/
     async createCourse(courseData) {

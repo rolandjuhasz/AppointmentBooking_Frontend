@@ -41,7 +41,7 @@ const isOpen = ref(false);
         </RouterLink>
 
         <RouterLink v-if="authStore.user"
-          :to="{ name: 'home' }" 
+          :to="{ name: 'profile' }" 
           class="relative text-lg font-medium hover:text-purple-400 transition duration-300"
         >
           {{authStore.user.name}}
