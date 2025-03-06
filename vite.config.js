@@ -20,7 +20,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: "http://appointmentbooking_api.railway.internal", // A backend API URL-je
+        target: 'https://appointmentbookingapi-production.up.railway.app', // A backend API URL-je
         changeOrigin: true,
         headers: {
           Accept: "application/json",
@@ -30,5 +30,6 @@ export default defineConfig({
       },
     },
   }
+  
   
 })
