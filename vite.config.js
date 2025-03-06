@@ -19,14 +19,16 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api' : {
-        target: "http://yamanote.proxy.rlwy.net",
+      '/api': {
+        target: "http://appointmentbooking_api.railway.internal", // A backend API URL-je
         changeOrigin: true,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-        }
-      }
-    }
+        },
+        rewrite: (path) => path.replace(/^\/api/, ''), // Ha szükséges, hogy az '/api' eltűnjön a requestből
+      },
+    },
   }
+  
 })
