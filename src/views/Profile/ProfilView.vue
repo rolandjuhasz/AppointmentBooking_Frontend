@@ -23,12 +23,34 @@ onMounted(async () => {
   await appointmentStore.getAppointmentForUser(authStore.user.id);
 });
 
+const selectedFile = ref(null);
+
+const onFileSelected = (event) => {
+  selectedFile.value = event.target.files[0];
+};
+
+const uploadAvatar = async () => {
+  if (!selectedFile.value) {
+    console.error("Nincs kiválasztott fájl!");
+    return;
+  }
+
+  await authStore.updateAvatar(selectedFile.value);
+};
+
+
 
 </script>
 
 <template>
   <main class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8 flex justify-center items-center">
     <div class="w-full max-w-4xl bg-white shadow-lg rounded-lg p-8" v-if="authStore.user">
+      <div class="mt-6 flex flex-col items-center">
+  <img :src="authStore.user.avatar" alt="Avatar" class="w-24 h-24 rounded-full shadow-lg">
+  
+  <input type="file" @change="onFileSelected" class="mt-4">
+  <button @click="uploadAvatar" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Upload Avatar</button>
+</div>
 
       <div class="text-center">
         <h1 class="text-3xl font-bold text-gray-800">Profile Datas</h1>
@@ -61,7 +83,7 @@ onMounted(async () => {
         </div>
       </div>
       
-      <div class="mt-10 text-center">
+      <div class="mt-10 text-center" v-if="authStore.user.role === 'expert' ">
         <h1 class="text-3xl font-bold text-gray-800">Your Courses</h1>
         <div class="mt-6 space-y-4">
           <div 
